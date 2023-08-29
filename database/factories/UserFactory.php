@@ -21,7 +21,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'location' =>fake()->country(),
+            'country' =>fake()->country(),
             'waste_material_produced' =>fake()->name(),
             'phone_number'=>random_int(0, 999999999),
             'password' => bcrypt(fake()->password), // password

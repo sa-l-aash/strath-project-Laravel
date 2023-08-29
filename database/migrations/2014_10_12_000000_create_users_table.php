@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('location');
+            $table->string('country');
             $table->string('waste_material_produced');
             $table->integer('phone_number');
             $table->string('password');
