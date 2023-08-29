@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +21,17 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+//User CRUD routes
+Route::post('/createNewUser',[UserController::class,'createNewUser']);
+Route::get('/readOneUser', [UserController::class,'readOneUser']);
+Route::get('/readAllUsers', [UserController::class,'readAllUsers']);
+Route::put('/updateUser', [UserController::class,'updateUser']);
+Route::delete('/deleteUser', [UserController::class,'deleteUser']);
+
+//Auth Controller routes
+Route::post('/register',[AuthController::class,'register']);
+Route::post('/login',[AuthController::class,'login']);
+//Auth saunctum routes
+Route::group(['middleware'=> ['auth:sanctum']], function(){    
+Route::post('/logout',[AuthController::class,'logout']);
+    });
