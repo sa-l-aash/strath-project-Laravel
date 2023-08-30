@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'country',
         'waste_material_produced',
+        'amount',
         'phone_number',
         'password',
     ];
