@@ -23,6 +23,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'country' =>fake()->country(),
             'waste_material_produced' =>fake()->name(),
+            'amount'=>random_int(0,1000),
             'phone_number'=>random_int(0, 999999999),
             'password' => bcrypt(fake()->password), // password
             'remember_token' => Str::random(10),

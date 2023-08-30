@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('country');
             $table->string('waste_material_produced');
+            $table->integer('amount');
             $table->integer('phone_number');
             $table->string('password');
             $table->rememberToken();
