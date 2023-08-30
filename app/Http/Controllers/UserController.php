@@ -13,9 +13,9 @@ class UserController extends Controller
             [
 'name'=>'required',
 'email'=>'required',
-
 'country'=>'required',
 'waste_material_produced'=>'required',
+'amount'=>'required',
 'phone_number'=>'required',
 'password'=>'required'
 
@@ -24,9 +24,9 @@ class UserController extends Controller
             $user = User::create([
                 'name'=>$request->name,
                 'email'=>$request->email,
-                
                 'country'=>$request->country,
                 'waste_material_produced'=>$request->waste_material_produced,
+                'amount'=>$request->amount,
                 'phone_number'=>$request->phone_number,
                 'password'=>$request->password
             ]);
@@ -72,18 +72,21 @@ class UserController extends Controller
             ]);
         }
     }
-    //the below update function can be used to update a users password
+    //the below update function is used to update the waste_material_produced and its amount
     function updateUser(Request $request) {
         $request->validate([
             'id'=> 'required',
-            'name'=> 'required'
+            //this is what we update
+           'waste_material_produced'=> 'required',
+            'amount'=>'required',
         ]);
        $name = User::find($request->id);
     if($name) {
         //retrieve the user from the db
         //    '$updateUser'  hosts the user
         //here we update a section of the record
-    $name-> name = $request->name;
+    $name-> amount = $request->amount;
+    $name-> waste_material_produced = $request->waste_material_produced;
     // and update it
     $name->save();
     //here we retrieve the record again after update
