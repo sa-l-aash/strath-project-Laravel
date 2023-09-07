@@ -24,7 +24,7 @@ class UserFactory extends Factory
             'country' =>fake()->country(),
             'waste_material_produced' =>fake()->name(),
             'amount'=>random_int(0,1000),
-            'phone_number'=>random_int(0, 999999999),
+            'phone_number'=>random_int(12),
             'password' => bcrypt(fake()->password), // password
             'remember_token' => Str::random(10),
         ];
