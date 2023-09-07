@@ -15,7 +15,8 @@ class AuthController extends Controller
             'email'=> 'required|string|unique:users,email',
             'country'=>'required|string',
             'waste_material_produced'=>'required|string',
-            'phone_number'=>'required|unique:users,phone_number',
+            'amount'=>'required|',
+            'phone_number'=>'required|string|unique:users,phone_number',
             'password'=> 'required|string|confirmed'
         ]);
 
@@ -24,6 +25,7 @@ class AuthController extends Controller
             'email'=> $textField['email'],
             'country'=> $textField['country'],
             'waste_material_produced'=> $textField['waste_material_produced'],
+            'amount'=> $textField['amount'],
             'phone_number'=> $textField['phone_number'],
             'password'=>bcrypt($textField['password'])
         ]);
@@ -66,12 +68,40 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    public function logout(Request $request){
-        auth()->user()->token()->delete();
+    // public function logout(Request $request){
+    //     auth()->user()->token()->delete();
 
         
+    //     return [
+    //         'message'=> 'You have been logged Out' 
+    //     ];
+    // }
+    public function logout(Request $request) {
+        \Log::info('Logout request received.');
+    
+        // Check if the user is authenticated
+        if (auth()->check()) {
+            \Log::info('User is authenticated.');
+    
+            // Attempt to delete the token
+            try {
+                auth()->user()->token()->delete();
+                \Log::info('Token deleted successfully.');
+            } catch (\Exception $e) {
+                // Log any exceptions or errors for debugging
+                \Log::error('Token deletion error: ' . $e->getMessage());
+                return [
+                    'message' => 'Error logging out. Please try again later.'
+                ];
+            }
+        } else {
+            \Log::info('User is not authenticated.');
+        }
+    
         return [
-            'message'=> 'You have been logged Out' 
+            'message' => 'You have been logged out'
         ];
     }
+    
+    
 }
