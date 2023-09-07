@@ -128,4 +128,37 @@ class UserController extends Controller
         }
 
     }
+    //search for a specific user using their waste_material_produced
+    function searchUsers(Request $request) {
+        $request->validate([
+            'query' => 'required|string',
+        ]);
+    
+        $query = $request->input('query');
+    
+        try {
+            // Perform the search based on the 'waste_material_produced' field
+            $users = User::where(function ($queryBuilder) use ($query) {
+                $queryBuilder->Where('waste_material_produced', 'LIKE', "%$query%");
+            })->get();
+    
+            if ($users->count() > 0) {
+                return response([
+                    'message' => 'success',
+                    'response' => $users
+                ]);
+            } else {
+                return response([
+                    'message' => 'success',
+                    'response' => 'No users found matching the query.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response([
+                'message' => 'error',
+                'response' => 'Error processing the request: ' . $e->getMessage()
+            ], 500); // Internal Server Error
+        }
+    }
+    
 }
