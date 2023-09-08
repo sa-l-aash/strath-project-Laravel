@@ -1,27 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use App\Models\User;
 
-
 class UserController extends Controller
 {
+    //this is a function that creates a new user
     function createNewUser(Request $request) {
         $request->validate(
             [
-'name'=>'required',
-'email'=>'required',
-'country'=>'required',
-'waste_material_produced'=>'required',
-'amount'=>'required',
-'phone_number'=>'required',
-'password'=>'required'
-
+            //below are the fields that are required 
+            //to be filled in order to add a new user
+            'name'=>'required',
+            'email'=>'required',
+            'country'=>'required',
+            'waste_material_produced'=>'required',
+            'amount'=>'required',
+            'phone_number'=>'required',
+            'password'=>'required'
             ]
             );
             $user = User::create([
+                //here we assigns the value of the name field from the incoming 
+                // $request data to the 'name' column in the User table.
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'country'=>$request->country,
@@ -30,7 +32,9 @@ class UserController extends Controller
                 'phone_number'=>$request->phone_number,
                 'password'=>$request->password
             ]);
+            //we then find the user using their id
             $user = User::find($user->id);
+            //if the user is present it prints his/her details
             if($user){
                 return response([
                     'message'=>'success',
@@ -38,6 +42,7 @@ class UserController extends Controller
                 ]);
             };
     }
+    //this function displays a certain user details using his/her id 
     function readOneUser(Request $request){
         $request->validate([
             'id'=> 'required'
@@ -55,15 +60,14 @@ class UserController extends Controller
             ]);
         }
     }
+    //this function displays all users present in the users table
     function readAllUsers() {
         $allUsers = User::all();
         //checks whether the response exist or not
         if($allUsers){
-            //response is taken as an array
             return response ([
                 'message'=>'Success',
                 'response'=> $allUsers
-
             ]);
         }else{
             return response([
@@ -76,7 +80,6 @@ class UserController extends Controller
     function updateUser(Request $request) {
         $request->validate([
             'id'=> 'required',
-            //this is what we update
            'waste_material_produced'=> 'required',
             'amount'=>'required',
         ]);
@@ -87,7 +90,7 @@ class UserController extends Controller
         //here we update a section of the record
     $name-> amount = $request->amount;
     $name-> waste_material_produced = $request->waste_material_produced;
-    // and update it
+    // and save it
     $name->save();
     //here we retrieve the record again after update
     return response([
@@ -98,23 +101,22 @@ class UserController extends Controller
     }else{
         return response([
             'message'=>'failed',
-            'response'=> 'Subcounty not does not exist'
+            'response'=> 'update failed'
 
         ]);
     }
 
     }
+    //here we delete a user using he/her id
     function deleteUser(Request $request){
-        //validate
         $request->validate([
             'id'=>'required'
         ]);
-        //retrieve the record 
         $name = User::find($request->id);
 //here we check if the record exists
         if($name){
             $deletedUser = $name;
-            //delete
+            //then delete it
             $name->delete();
             return response([
                 'message'=>'success',
@@ -123,17 +125,17 @@ class UserController extends Controller
         }else{
             return response([
                 'message'=>'success',
-                'response'=> 'deleted user not found or does not exist'
+                'response'=> 'user does not exist/delete failed'
             ]);
         }
-
     }
     //search for a specific user using their waste_material_produced
     function searchUsers(Request $request) {
         $request->validate([
             'query' => 'required|string',
         ]);
-    
+        //here we retrieve the 'query' parameter from 
+        // the above request and assigns it to $query
         $query = $request->input('query');
     
         try {
@@ -153,6 +155,7 @@ class UserController extends Controller
                     'response' => 'No users found matching the query.'
                 ]);
             }
+            //here we catch exceptions
         } catch (\Exception $e) {
             return response([
                 'message' => 'error',

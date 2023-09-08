@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     //here we will have the register,login and logout functions
+
     public function register(Request $request){
         $textField = $request->validate([
             'name'=> 'required|string',
@@ -41,67 +42,35 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
-    
+    //this function checks if the email and password inputed exist in the db
     public function login(Request $request){
         $textField = $request->validate([
             'email'=> 'required|string',
             'password'=> 'required|string'
         ]);
-
         //check email
         $user = User::where('email', $textField['email'])->first();
-
         //check password
         if(!$user || !Hash::check($textField['password'], $user->password)){
             return response([
                 'message'=> 'Bad Credentials'
             ], 401);
         }
-
+        //if the user exists it creates an authentication token
         $token = $user->createToken('myAppToken')->plainTextToken;
-
+        //it then displays the user and his/her auth token
         $response = [
             'user'=> $user,
             'token'=>$token
         ];
-
         return response($response, 201);
     }
-
-    // public function logout(Request $request){
-    //     auth()->user()->token()->delete();
-
-        
-    //     return [
-    //         'message'=> 'You have been logged Out' 
-    //     ];
-    // }
-    public function logout(Request $request) {
-        \Log::info('Logout request received.');
-    
-        // Check if the user is authenticated
-        if (auth()->check()) {
-            \Log::info('User is authenticated.');
-    
-            // Attempt to delete the token
-            try {
-                auth()->user()->token()->delete();
-                \Log::info('Token deleted successfully.');
-            } catch (\Exception $e) {
-                // Log any exceptions or errors for debugging
-                \Log::error('Token deletion error: ' . $e->getMessage());
-                return [
-                    'message' => 'Error logging out. Please try again later.'
-                ];
-            }
-        } else {
-            \Log::info('User is not authenticated.');
-        }
-    
+    //logout function
+    //NB:does not work
+    public function logout(Request $request){
+        auth()->user()->token()->delete();
         return [
-            'message' => 'You have been logged out'
+            'message'=> 'You have been logged Out' 
         ];
     }
-    
-    
 }
