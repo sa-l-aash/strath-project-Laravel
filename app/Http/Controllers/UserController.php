@@ -79,7 +79,6 @@ class UserController extends Controller
     //the below update function is used to update the waste_material_produced and its amount
     function updateUser(Request $request) {
         $request->validate([
-            'id'=> 'required',
            'waste_material_produced'=> 'required',
             'amount'=>'required',
         ]);
@@ -105,15 +104,15 @@ class UserController extends Controller
 
         ]);
     }
-
     }
+
     //here we delete a user using he/her id
     function deleteUser(Request $request){
         $request->validate([
             'id'=>'required'
         ]);
         $name = User::find($request->id);
-//here we check if the record exists
+        //here we check if the record exists
         if($name){
             $deletedUser = $name;
             //then delete it
@@ -129,6 +128,7 @@ class UserController extends Controller
             ]);
         }
     }
+
     //search for a specific user using their waste_material_produced
     function searchUsers(Request $request) {
         $request->validate([
