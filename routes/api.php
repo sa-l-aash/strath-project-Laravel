@@ -20,7 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //User CRUD routes
 Route::post('/createNewUser',[UserController::class,'createNewUser']);
 Route::get('/readOneUser', [UserController::class,'readOneUser']);
-Route::get('/readAllUsers', [UserController::class,'readAllUsers']);
 Route::put('/updateUser', [UserController::class,'updateUser']);
 Route::delete('/deleteUser', [UserController::class,'deleteUser']);
 Route::get('/searchUsers', [UserController::class, 'searchUsers']);
@@ -30,7 +29,8 @@ Route::post('/register',[AuthController::class,'register']);
 Route::post('/login',[AuthController::class,'login']);
 
 //Auth saunctum routes
-Route::group(['middleware'=> ['auth:sanctum']], function(){    
+Route::group(['middleware'=> ['auth:sanctum']], function(){  
+Route::get('/readAllUsers', [UserController::class,'readAllUsers']);
 Route::post('/logout',[AuthController::class,'logout']);
 });
 
