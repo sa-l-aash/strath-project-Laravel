@@ -39,7 +39,7 @@ class AuthController extends Controller
             'token'=>$token
         ];
         //this will return the above response and also 201
-        return response($response, 201);
+        return response($response, 200);
     }
 
     //this function checks if the email and password inputed exist in the db
@@ -63,7 +63,7 @@ class AuthController extends Controller
             'user'=> $user,
             'token'=>$token
         ];
-        return response($response, 201);
+        return response($response, 200);
     }
     //logout function
     //NB:does not work
